@@ -93,6 +93,7 @@ artifacts for this fork. The curated changelog was not edited.
 
 ## Sources
 
+- [Pinned J72 reference inventory and adaptation boundaries](j72-reference.md)
 - [Orchard device rules](https://github.com/OrchardLinux/orchard/blob/897686d9415634000eb202fe1d492e6bdb9d9d64/AGENTS.md)
 - [Orchard J71 descriptor](https://github.com/OrchardLinux/orchard/blob/897686d9415634000eb202fe1d492e6bdb9d9d64/devices/j71/device.toml)
 - [J72 replication guide](https://github.com/thisiscamk/ipad-air-j72-linux/blob/1addefe99cc3793c068594cfcb4ecf5497e0cb34/QUICKSTART.md)

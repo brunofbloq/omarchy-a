@@ -1,0 +1,25 @@
+#!/bin/busybox sh
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Based on Orchard's minimal-boot init; starts its ordinary serial/SSH helper.
+set -eu
+export PATH=/bin:/sbin:/usr/bin:/usr/sbin
+/bin/busybox --install -s /bin
+mount -t proc -o nosuid,nodev,noexec proc /proc
+mount -t sysfs -o nosuid,nodev,noexec sysfs /sys
+mount -t devtmpfs -o nosuid devtmpfs /dev
+mount -t tmpfs -o nosuid,nodev tmpfs /run
+mkdir -p /dev/pts /tmp /var/run
+mount -t devpts devpts /dev/pts
+exec </dev/console >/dev/console 2>&1
+echo /bin/false > /proc/sys/kernel/modprobe
+sh /usr/libexec/orchard/usb-session
+mkdir -p /run/j71-evidence
+uname -a > /run/j71-evidence/uname.txt
+cat /proc/sys/kernel/random/boot_id > /run/j71-evidence/boot-id.txt
+cat /proc/mounts > /run/j71-evidence/mounts.txt
+dmesg > /run/j71-evidence/dmesg.txt
+echo 'J71 RAM console: internal storage unmounted. Reboot, then verify return to iOS.'
+while :; do
+    setsid sh -i </dev/ttyGS0 >/dev/ttyGS0 2>&1 || true
+    sleep 1
+done

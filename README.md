@@ -1,4 +1,15 @@
-# Omarchy A
+# Omarchy A - J71 research fork
+
+This fork records experimental preparation for the **iPad Air 1 Wi-Fi,
+A1474 / iPad4,1 / J71AP**. It adds pinned RAM preparation tools and sanitized
+bring-up findings to [upstream Omarchy A](https://github.com/OrchardLinux/omarchy-a).
+**Linux and Omarchy have not booted successfully on the tested J71.** Two
+Windows/WSL attempts stopped before Pongo; installation work is on hold.
+
+Start with the [J71 status and scope](docs/j71-bringup.md) and
+[reproducible preparation tools](tools/j71/README.md). The upstream install
+instructions below are for upstream-supported devices; they are not a
+qualified A1474 installation recipe. J71 and the newer J71b are different boards.
 
 An experimental, [Omarchy](https://omarchy.org/)-inspired desktop for Apple A-series devices. Built on Arch Linux ARM, with Omarchy's look and feel reworked for touch.
 

@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "orchard": {
+    "repository": "https://github.com/OrchardLinux/orchard.git",
+    "release": "nightly-20261106-897686d94156",
+    "commit": "897686d9415634000eb202fe1d492e6bdb9d9d64"
+  },
+  "platform": "apple-4k",
+  "kernel_release": "7.3.0-rc1-orchard-apple-4k",
+  "pongo_sha256": "6cc34754c9a0f183b5ec7900e28396b414e62900da4ab571585bf82b9b04be06",
+  "tools_key": "ad1deef2e51eb7d3fc4e85a5cfadd38b51a4e834731bd1e9783f5a01ac8d51e8",
+  "target": {
+    "board": "j71",
+    "product": "iPad4,1",
+    "model": "A1474",
+    "chip": "0x8960",
+    "board_id": "0x10"
+  }
+}

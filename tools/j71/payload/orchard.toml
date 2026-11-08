@@ -1,0 +1,6 @@
+name = "j71-ram"
+
+[payload]
+transport = true
+modules = false
+firmware = false

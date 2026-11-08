@@ -1,4 +1,5 @@
 Default project license: GPL-2.0-or-later (LICENSE).
+J71 research RAM init: based on OrchardLinux/orchard examples/minimal-boot/init, GPL-2.0-or-later.
 Omarchy shell: David Heinemeier Hansson, MIT (desktop/shell/LICENSE).
 m1n1: boot/m1n1/LICENSE.
 PongoOS and its components (pongo.bin, built by OrchardLinux/orchard): boot/pongo/LICENSE.md.

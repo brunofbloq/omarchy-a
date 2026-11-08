@@ -1,0 +1,22 @@
+#!/bin/bash
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Prepare source/components only. This command never boots an iPad.
+set -euo pipefail
+here=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
+repo=$(CDPATH= cd -- "$here/../.." && pwd -P)
+orchard_dir=${J71_ORCHARD:-$HOME/projects/OrchardLinux/orchard-j71}
+command -v uv >/dev/null || { echo 'Install uv first: https://docs.astral.sh/uv/getting-started/installation/' >&2; exit 1; }
+read_pin() { python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["orchard"][sys.argv[2]])' "$here/pins.json" "$1"; }
+source_url=$(read_pin repository)
+source_tag=$(read_pin release)
+source_commit=$(read_pin commit)
+df -h "$repo" "$HOME"
+if [ ! -d "$orchard_dir/.git" ]; then
+    mkdir -p "$(dirname "$orchard_dir")"
+    git -c core.autocrlf=false -c core.eol=lf clone --depth 1 --branch "$source_tag" "$source_url" "$orchard_dir"
+fi
+if [ "$(git -C "$orchard_dir" rev-parse HEAD)" != "$source_commit" ]; then
+    echo "Existing Orchard checkout differs from pins.json: $orchard_dir. Nothing reset." >&2
+    exit 1
+fi
+exec "$orchard_dir/bin/orchard" python "$here/prepare.py" "$@"

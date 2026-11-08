@@ -1,8 +1,11 @@
 """The build imports none of orchard's Python: orchard's producers run as commands (orchard docs/distribution-contract.md).
 
-Tests may import orchard; they test against it.
+Tests may import orchard; they test against it. The standalone tools/j71
+research commands run in the pinned Orchard environment, outside the distro
+build. Production code must not import that research namespace either.
 """
 import ast
+import os
 from pathlib import Path
 import unittest
 
@@ -10,15 +13,21 @@ PROJECT = Path(__file__).resolve().parents[1]
 
 
 def python_files():
-    for path in sorted(PROJECT.rglob('*')):
-        relative = path.relative_to(PROJECT)
-        if not path.is_file() or relative.parts[0] in ('tests', 'out', '.orchard', '.venv', '.git') \
-                or '__pycache__' in relative.parts:
-            continue
-        if path.suffix == '.py':
-            yield path
-        elif not path.suffix and path.read_bytes()[:64].startswith(b'#!') and b'python' in path.read_bytes()[:64]:
-            yield path
+    excluded = {'tests', 'out', '.work', '.orchard', '.git'}
+    for directory, children, files in os.walk(PROJECT):
+        relative = Path(directory).relative_to(PROJECT)
+        children[:] = sorted(name for name in children
+                             if name != '__pycache__'
+                             and not (relative == Path('.') and (name in excluded or name.startswith('.venv')))
+                             and not (relative == Path('tools') and name == 'j71'))
+        for name in sorted(files):
+            path = Path(directory) / name
+            if path.suffix == '.py':
+                yield path
+            elif not path.suffix:
+                header = path.read_bytes()[:64]
+                if header.startswith(b'#!') and b'python' in header:
+                    yield path
 
 
 class NoOrchardImports(unittest.TestCase):
@@ -33,6 +42,7 @@ class NoOrchardImports(unittest.TestCase):
                 for name in names:
                     with self.subTest(path=str(path.relative_to(PROJECT)), module=name):
                         self.assertNotEqual(name.split('.')[0], 'orchard')
+                        self.assertFalse(name == 'tools.j71' or name.startswith('tools.j71.'))
 
 
 if __name__ == '__main__':
